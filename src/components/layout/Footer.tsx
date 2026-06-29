@@ -63,7 +63,7 @@ export function Footer() {
             © {new Date().getFullYear()} Powered by RecruitGPT AI.
           </p>
           <div className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-white/60 text-sm">
-            Made for <span className="text-white font-medium">India Runs Hackathon</span>
+            Powered by <span className="text-white font-medium">RecruitGPT Engine</span>
           </div>
         </div>
       </div>

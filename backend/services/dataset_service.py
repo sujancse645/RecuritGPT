@@ -58,7 +58,7 @@ async def process_dataset_async(client_id: str, filename: str, content: bytes, d
             name=filename,
             version=version_str,
             uploaded_at=datetime.utcnow(),
-            source="India Runs Challenge",
+            source="RecruitGPT Platform",
             status="PROCESSING",
             record_count=0,
             job_count=1
@@ -143,12 +143,15 @@ async def process_dataset_async(client_id: str, filename: str, content: bytes, d
         
         # 5. Stream & Parse Candidates in chunks
         if not candidates_content:
-            raise ValueError("No candidate profile dataset (candidates.jsonl) discovered in the upload.")
+            await event_bus.publish(create_event(client_id, EventType.ValidationStarted, 55, "No candidate data provided, proceeding with zero candidates..."))
+            total_processed = 0
+            total_valid = 0
+            total_failed = 0
+        else:
+            await event_bus.publish(create_event(client_id, EventType.ValidationStarted, 55, "Beginning streaming batch ingestion..."))
             
-        await event_bus.publish(create_event(client_id, EventType.ValidationStarted, 55, "Beginning streaming batch ingestion..."))
-        
-        # Define stream reader from candidates_content bytes
-        stream = io.BytesIO(candidates_content)
+            # Define stream reader from candidates_content bytes
+            stream = io.BytesIO(candidates_content)
         if candidates_filename.endswith('.gz') or candidates_filename.endswith('.jsonl.gz'):
             stream = gzip.GzipFile(fileobj=stream)
             

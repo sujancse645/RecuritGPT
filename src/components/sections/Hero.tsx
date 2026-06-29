@@ -98,7 +98,7 @@ export function Hero({ onStart }: { onStart?: () => void }) {
             <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" />
           </Button>
           
-          <Button variant="ghost" size="lg" className="min-w-[200px]">
+          <Button variant="ghost" size="lg" className="min-w-[200px]" onClick={() => document.getElementById('technology')?.scrollIntoView({ behavior: 'smooth' })}>
             View Architecture
           </Button>
         </motion.div>

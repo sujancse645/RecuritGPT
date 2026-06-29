@@ -13,7 +13,7 @@ const navLinks = [
   { name: "Architecture", href: "#architecture" },
 ];
 
-export function Navbar() {
+export function Navbar({ onSignIn }: { onSignIn?: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -77,10 +77,10 @@ export function Navbar() {
             transition={{ duration: 0.8 }}
             className="hidden md:flex items-center gap-4"
           >
-            <a href="#signin" className="text-sm font-medium text-white/80 hover:text-white transition-colors">
+            <button onClick={onSignIn} className="text-sm font-medium text-white/80 hover:text-white transition-colors">
               Sign In
-            </a>
-            <Button variant="primary" size="sm" className="group">
+            </button>
+            <Button variant="primary" size="sm" className="group" onClick={() => document.getElementById('platform')?.scrollIntoView({ behavior: 'smooth' })}>
               Live Demo
               <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Button>
@@ -120,10 +120,13 @@ export function Navbar() {
               ))}
               <div className="h-[1px] bg-white/10 my-2" />
               <div className="flex flex-col gap-4">
-                <a href="#signin" className="text-lg font-medium text-white/80 hover:text-white">
+                <button onClick={() => { setMobileMenuOpen(false); onSignIn?.(); }} className="text-lg font-medium text-white/80 hover:text-white text-left">
                   Sign In
-                </a>
-                <Button variant="primary" className="w-full justify-center">
+                </button>
+                <Button variant="primary" className="w-full justify-center" onClick={() => {
+                  setMobileMenuOpen(false);
+                  document.getElementById('platform')?.scrollIntoView({ behavior: 'smooth' });
+                }}>
                   Live Demo
                 </Button>
               </div>

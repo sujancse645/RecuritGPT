@@ -17,15 +17,34 @@ export function AICopilot() {
     }
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
-    setMessages(prev => [...prev, { role: "user", content: input }]);
+    const userMessage = { role: "user" as const, content: input };
+    setMessages(prev => [...prev, userMessage]);
     setInput("");
     
-    // Simulate AI response
-    setTimeout(() => {
-      setMessages(prev => [...prev, { role: "ai", content: "I'm analyzing the differences in their system design experience now. I will update the comparison panel shortly." }]);
-    }, 1500);
+    try {
+      // In a real app, this job_id comes from a Context or Redux store
+      // We hardcode the demo UUID generated in Phase 4B
+      const response = await fetch("http://localhost:8000/api/v1/copilot/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          job_id: "00000000-0000-0000-0000-000000000000", 
+          question: userMessage.content,
+          history: messages
+        })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setMessages(prev => [...prev, { role: "ai", content: data.answer }]);
+      } else {
+        setMessages(prev => [...prev, { role: "ai", content: "Connection error with AI Core." }]);
+      }
+    } catch (err) {
+      setMessages(prev => [...prev, { role: "ai", content: "Communication failure." }]);
+    }
   };
 
   return (

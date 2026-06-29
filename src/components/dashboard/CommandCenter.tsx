@@ -1,12 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
 import { MissionOverview } from "./MissionOverview";
-import { NaturalLanguageSearch } from "./NaturalLanguageSearch";
+import { SemanticSearchStatus } from "./SemanticSearchStatus";
 import { AgentStatusMini } from "./AgentStatusMini";
 import { AICopilot } from "./AICopilot";
 import { LiveIntelligenceFeed } from "./LiveIntelligenceFeed";
-import { CandidateGrid } from "./CandidateGrid";
+import { CandidateDiscoveryFeed } from "./CandidateDiscoveryFeed";
 import { KnowledgeGraph } from "@/components/3d/KnowledgeGraph";
+import { LogOut } from "lucide-react";
 
 export function CommandCenter() {
   return (
@@ -43,6 +44,16 @@ export function CommandCenter() {
             <div className="text-[10px] uppercase text-white/40 tracking-wider">Bias Removed</div>
             <div className="text-lg font-mono font-bold text-green-400 tabular-nums">100%</div>
           </div>
+          <div className="flex items-center ml-4 pl-8 border-l border-white/10">
+            <button 
+              onClick={() => window.location.reload()} 
+              className="flex items-center gap-2 text-xs font-medium text-white/50 hover:text-white transition-colors uppercase tracking-wider"
+              title="Return to Landing Page"
+            >
+              <LogOut className="w-4 h-4" />
+              Exit
+            </button>
+          </div>
         </div>
       </motion.header>
 
@@ -57,7 +68,7 @@ export function CommandCenter() {
           className="lg:col-span-3 flex flex-col overflow-y-auto hidden-scrollbar"
         >
           <MissionOverview />
-          <NaturalLanguageSearch />
+          <SemanticSearchStatus />
           <AgentStatusMini />
         </motion.div>
 
@@ -68,7 +79,7 @@ export function CommandCenter() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="lg:col-span-6 relative overflow-y-auto hidden-scrollbar pb-20"
         >
-          <CandidateGrid />
+          <CandidateDiscoveryFeed />
         </motion.div>
 
         {/* Right Column: Copilot & Feeds */}

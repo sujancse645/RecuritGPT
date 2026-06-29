@@ -38,7 +38,7 @@ class GeminiProvider(ILLMProvider):
     def __init__(self, api_key: str):
         import google.generativeai as genai
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-1.5-pro')
+        self.model = genai.GenerativeModel('gemini-1.5-flash')
 
     async def generate_completion(self, prompt: str, **kwargs) -> str:
         response = await self.model.generate_content_async(prompt)
@@ -124,4 +124,17 @@ class MockLLMProvider(ILLMProvider):
         return "{}"
 
     async def get_embeddings(self, text: str) -> list[float]:
-        return [0.0] * 1536
+        return [0.0] * 384
+
+class SentenceTransformerProvider(ILLMProvider):
+    def __init__(self, model_name: str = "all-MiniLM-L6-v2"):
+        from sentence_transformers import SentenceTransformer
+        self.model = SentenceTransformer(model_name)
+    
+    async def generate_completion(self, prompt: str, **kwargs) -> str:
+        raise NotImplementedError("SentenceTransformer only generates embeddings, not completions.")
+
+    async def get_embeddings(self, text: str) -> list[float]:
+        # encode returns a numpy array, convert to list of floats
+        embedding = self.model.encode(text)
+        return embedding.tolist()

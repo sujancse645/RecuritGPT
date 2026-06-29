@@ -50,15 +50,15 @@ export default function Home() {
             className="relative z-10"
           >
             <NeuralNetworkBackground />
-            <Navbar />
+            <Navbar onSignIn={() => setAppState("COMMAND_CENTER")} />
             
             <div className="relative z-10">
               <Hero onStart={startMission} />
               <UploadArea onStart={startMission} />
-              <ImportSection />
-              <Statistics />
-              <AICapabilities />
-              <InteractiveDemo />
+              <div id="technology"><ImportSection /></div>
+              <div id="features"><Statistics /></div>
+              <div id="ai-engine"><AICapabilities /></div>
+              <div id="architecture"><InteractiveDemo /></div>
             </div>
 
             <Footer />

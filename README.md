@@ -34,3 +34,91 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# README.md
+
+# RecruitGPT
+
+An enterprise AI-powered recruitment platform that automates the complete hiring lifecycle using LLMs, RAG, semantic search, workflow automation, and analytics.
+
+## Features
+
+* AI Resume Parsing
+* Candidate Ranking
+* Semantic Candidate Search
+* Job Management
+* Interview Management
+* Offer Management
+* Workflow Automation
+* Analytics Dashboard
+* AI Chat Assistant
+* Multi-Tenant SaaS
+* RBAC Security
+* Notifications
+* REST API
+
+## Technology Stack
+
+### Frontend
+
+* Next.js
+* React
+* TypeScript
+* Tailwind CSS
+* shadcn/ui
+
+### Backend
+
+* NestJS
+* PostgreSQL
+* Redis
+* Prisma ORM
+
+### AI
+
+* OpenAI-compatible LLMs
+* RAG
+* pgvector/Qdrant
+* LangChain
+
+### Infrastructure
+
+* Docker
+* Nginx
+* Kubernetes (optional)
+
+## Documentation
+
+* PRD.md
+* SYSTEM_ARCHITECTURE.md
+* DATABASE_SCHEMA.md
+* API_SPECIFICATION.md
+* AI_SPECIFICATION.md
+* HANDOFF.md
+
+## Installation
+
+```bash
+git clone <repository>
+
+cd recruitgpt
+
+docker compose up -d
+```
+
+## Development
+
+```bash
+npm install
+
+npm run dev
+```
+
+## Production
+
+```bash
+docker compose -f docker-compose.prod.yml up -d
+```
+
+## License
+
+Private / Proprietary

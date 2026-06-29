@@ -71,6 +71,7 @@ class Candidate(Base, TimestampMixin):
     recommendation_status = Column(String)
     
     dataset = relationship("Dataset", back_populates="candidates")
+    job = relationship("Job", back_populates="candidates")
     skills = relationship("Skill", back_populates="candidate", cascade="all, delete-orphan")
     experiences = relationship("Experience", back_populates="candidate", cascade="all, delete-orphan")
     educations = relationship("Education", back_populates="candidate", cascade="all, delete-orphan")
@@ -242,18 +243,28 @@ class Embedding(Base, TimestampMixin):
 class SemanticMatch(Base, TimestampMixin):
     __tablename__ = 'semantic_matches'
     id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    candidate_id = Column(Uuid(as_uuid=True), ForeignKey('candidates.id'))
+    job_id = Column(Uuid(as_uuid=True), ForeignKey('jobs.id'))
+    similarity_score = Column(Float)
 
-class CandidateScore(Base, TimestampMixin):
-    __tablename__ = 'candidate_scores'
+class CandidateRanking(Base, TimestampMixin):
+    __tablename__ = 'candidate_rankings'
     id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    candidate_id = Column(Uuid(as_uuid=True), ForeignKey('candidates.id'))
+    job_id = Column(Uuid(as_uuid=True), ForeignKey('jobs.id'))
+    match_score = Column(Float)
+    confidence_score = Column(Float)
+    hiring_recommendation = Column(String)
 
-class AgentReasoning(Base, TimestampMixin):
-    __tablename__ = 'agent_reasoning'
+class CandidateExplainability(Base, TimestampMixin):
+    __tablename__ = 'candidate_explainability'
     id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
-
-class Explainability(Base, TimestampMixin):
-    __tablename__ = 'explainability'
-    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    candidate_id = Column(Uuid(as_uuid=True), ForeignKey('candidates.id'))
+    job_id = Column(Uuid(as_uuid=True), ForeignKey('jobs.id'))
+    matching_skills = Column(JSON) # List of strings
+    missing_skills = Column(JSON)  # List of strings
+    strengths = Column(JSON)       # List of strings
+    weaknesses = Column(JSON)      # List of strings
 
 class KnowledgeGraph(Base, TimestampMixin):
     __tablename__ = 'knowledge_graph_nodes'
@@ -262,69 +273,12 @@ class KnowledgeGraph(Base, TimestampMixin):
 class InterviewQuestion(Base, TimestampMixin):
     __tablename__ = 'interview_questions'
     id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
-
-
-# --- Future AI-Ready Placeholder Tables (Unused in Phase 4) ---
-
-class Embeddings(Base, TimestampMixin):
-    __tablename__ = 'embeddings_placeholder'
-    
-    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    candidate_id = Column(Uuid(as_uuid=True), ForeignKey('candidates.id'))
-    vector = Column(JSON) # JSON array of floats
-    model_name = Column(String)
-
-class SemanticMatches(Base, TimestampMixin):
-    __tablename__ = 'semantic_matches_placeholder'
-    
-    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
     candidate_id = Column(Uuid(as_uuid=True), ForeignKey('candidates.id'))
     job_id = Column(Uuid(as_uuid=True), ForeignKey('jobs.id'))
-    similarity_score = Column(Float)
-    match_rationale = Column(Text)
-
-class CandidateScores(Base, TimestampMixin):
-    __tablename__ = 'candidate_scores_placeholder'
-    
-    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    candidate_id = Column(Uuid(as_uuid=True), ForeignKey('candidates.id'))
-    cognitive_score = Column(Float)
-    role_fit_score = Column(Float)
-    experience_score = Column(Float)
-    growth_score = Column(Float)
-
-class AgentReasoning(Base, TimestampMixin):
-    __tablename__ = 'agent_reasoning_placeholder'
-    
-    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    candidate_id = Column(Uuid(as_uuid=True), ForeignKey('candidates.id'))
-    thought_process = Column(Text)
-    agent_role = Column(String)
-    decision = Column(String)
-
-class Explainability(Base, TimestampMixin):
-    __tablename__ = 'explainability_placeholder'
-    
-    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    candidate_id = Column(Uuid(as_uuid=True), ForeignKey('candidates.id'))
-    key_drivers = Column(JSON)
-    gap_analysis = Column(JSON)
-    summary = Column(Text)
-
-class KnowledgeGraph(Base, TimestampMixin):
-    __tablename__ = 'knowledge_graph_placeholder'
-    
-    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    entity_type = Column(String)
-    entity_name = Column(String)
-    relations = Column(JSON)
-
-class InterviewQuestions(Base, TimestampMixin):
-    __tablename__ = 'interview_questions_placeholder'
-    
-    id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    candidate_id = Column(Uuid(as_uuid=True), ForeignKey('candidates.id'))
     question_text = Column(Text)
     expected_answer = Column(Text)
     focus_area = Column(String)
     difficulty = Column(String)
+
+
+# End of models
